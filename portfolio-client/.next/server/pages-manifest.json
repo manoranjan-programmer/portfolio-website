@@ -1,0 +1,18 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/admin-login": "pages/admin-login.js",
+  "/dashboard": "pages/dashboard.js",
+  "/api/certifications": "pages/api/certifications.js",
+  "/api/admin/login": "pages/api/admin/login.js",
+  "/api/about": "pages/api/about.js",
+  "/api/projects": "pages/api/projects.js",
+  "/api/experience": "pages/api/experience.js",
+  "/api/skills": "pages/api/skills.js",
+  "/api/admin/stats": "pages/api/admin/stats.js",
+  "/api/contact": "pages/api/contact.js",
+  "/api/education": "pages/api/education.js",
+  "/api/leadership": "pages/api/leadership.js",
+  "/api/certifications/[id]": "pages/api/certifications/[id].js"
+}
