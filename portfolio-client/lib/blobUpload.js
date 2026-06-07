@@ -12,11 +12,18 @@ export function isUploadFile(value) {
 }
 
 export async function uploadBlobFile(file, folder = "uploads") {
+  const token = process.env.BLOB_READ_WRITE_TOKEN
+
+  if (!token) {
+    throw new Error("Missing BLOB_READ_WRITE_TOKEN")
+  }
+
   const safeName = sanitizeFileName(file.name || "upload")
   const pathname = `${folder}/${Date.now()}-${safeName}`
 
   return put(pathname, file, {
     access: "public",
     contentType: file.type || "application/octet-stream",
+    token,
   })
 }
