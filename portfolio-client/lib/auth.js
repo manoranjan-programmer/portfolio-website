@@ -1,10 +1,7 @@
 import jwt from "jsonwebtoken"
 
-export function verifyToken(req, res) {
-  const authHeader = req.headers.authorization
-
+export function verifyAuthHeader(authHeader) {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    res.status(401).json({ message: "Unauthorized" })
     return null
   }
 
@@ -14,7 +11,21 @@ export function verifyToken(req, res) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
     return decoded.id
   } catch (error) {
-    res.status(401).json({ message: "Invalid or expired token" })
     return null
   }
+}
+
+export function verifyRequestToken(request) {
+  return verifyAuthHeader(request.headers.get("authorization"))
+}
+
+export function verifyToken(req, res) {
+  const adminId = verifyAuthHeader(req.headers.authorization)
+
+  if (!adminId) {
+    res.status(401).json({ message: "Unauthorized" })
+    return null
+  }
+
+  return adminId
 }

@@ -188,6 +188,14 @@ function AdminDashboard() {
     setProjectImageFile(e.target.files?.[0] || null)
   }
 
+  const uploadFile = async (file) => {
+    const formData = new FormData()
+    formData.append("file", file)
+
+    const response = await API.post("/upload", formData)
+    return response.data.url
+  }
+
   const handleExperienceChange = (e) => {
     const { name, value, type, checked } = e.target
     setExperienceForm({
@@ -235,23 +243,15 @@ function AdminDashboard() {
           .filter(Boolean),
       }
 
-      let requestData = payload
       if (projectImageFile) {
-        const formData = new FormData()
-        Object.entries(payload).forEach(([key, value]) => {
-          if (value !== undefined && value !== null) {
-            formData.append(key, value)
-          }
-        })
-        formData.append("image", projectImageFile)
-        requestData = formData
+        payload.image = await uploadFile(projectImageFile)
       }
 
       if (selectedProject) {
-        await API.put(`/projects/${selectedProject._id}`, requestData)
+        await API.put(`/projects/${selectedProject._id}`, payload)
         setMessage("Project updated successfully ✅")
       } else {
-        await API.post("/projects", requestData)
+        await API.post("/projects", payload)
         setMessage("Project created successfully ✅")
       }
 
@@ -311,24 +311,21 @@ function AdminDashboard() {
   const handleCertificationSubmit = async (e) => {
     e.preventDefault()
     try {
-      const formData = new FormData()
-      Object.entries(certificationForm).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          formData.append(key, value)
-        }
-      })
+      const payload = { ...certificationForm }
+
       if (certificationImageFile) {
-        formData.append("image", certificationImageFile)
+        payload.image = await uploadFile(certificationImageFile)
       }
+
       if (certificationAchievementImageFile) {
-        formData.append("achievementImage", certificationAchievementImageFile)
+        payload.achievementImage = await uploadFile(certificationAchievementImageFile)
       }
 
       if (selectedCertification) {
-        await API.put(`/certifications/${selectedCertification._id}`, formData)
+        await API.put(`/certifications/${selectedCertification._id}`, payload)
         setMessage("Certification updated successfully ✅")
       } else {
-        await API.post("/certifications", formData)
+        await API.post("/certifications", payload)
         setMessage("Certification created successfully ✅")
       }
 
