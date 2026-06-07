@@ -5,6 +5,8 @@ import { FaBars, FaTimes, FaUserShield } from "react-icons/fa"
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const profilePicUrl =
+    process.env.NEXT_PUBLIC_PROFILE_PIC_URL || process.env.VITE_PROFILE_PIC_URL
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,6 +41,13 @@ function Navbar() {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <a href="#home" className="flex items-center gap-2 group">
+            {profilePicUrl && (
+              <img
+                src={profilePicUrl}
+                alt="Mano Ranjan"
+                className="h-9 w-9 md:h-10 md:w-10 rounded-full object-cover border border-indigo-400/30 shadow-[0_0_18px_rgba(129,140,248,0.25)] transition-all duration-300 group-hover:border-emerald-400/50"
+              />
+            )}
             <h1 className="text-xl md:text-2xl font-extrabold tracking-tight text-white group-hover:scale-105 transition-all duration-300">
               Mano
               <span className="text-indigo-400 group-hover:text-emerald-400 transition-colors duration-300">
